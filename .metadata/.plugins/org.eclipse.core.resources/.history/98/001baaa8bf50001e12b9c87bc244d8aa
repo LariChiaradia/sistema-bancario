@@ -1,0 +1,287 @@
+package classes;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Main {
+	private static ListaDeContas _listaDeContas = new ListaDeContas(new ArrayList<Conta>());
+	private static Scanner _leitor = new Scanner(System.in);
+	
+	public static void main(String[] args) {
+
+		ArrayList<Conta> contas = new ArrayList<>();
+
+		contas.add(new Conta(1111, "Larissa Trump", 100, 100));
+		contas.add(new Conta(2222, "Emilly Lula", 200, 200));
+		contas.add(new Conta(3333, "Tarita Bolsonaro", 300, 0));
+
+		_listaDeContas.InserirContas(contas);
+
+		int opcao;
+
+		do {
+			System.out.println("*****MENU PRINCIPAL*****");
+			System.out.println();
+			System.out.println("1 - Cadastro de Conta");
+			System.out.println("2 - Mostrar Todas as Contas");
+			System.out.println("3 - Mostrar Dados de Conta Específica");
+			System.out.println("4 - Alterar Dados em Conta");
+			System.out.println("5 - Excluir Conta");
+			System.out.println("6 - Efetuar Depósito");
+			System.out.println("7 - Pagamento");
+			System.out.println("8 - Transferência entre contas");
+			System.out.println("9 - Sair");
+
+			System.out.print("Opção:");
+			opcao = _leitor.nextInt();
+
+			switch (opcao) {
+
+			case 1:
+				Cadastro();
+
+				break;
+
+			case 2:
+				MostrarTodos();
+
+				break;
+
+			case 3:
+
+				MostrarConta();
+
+				break;
+			case 4:
+
+				AtualizarConta();
+
+				break;
+
+			case 5:
+
+				RemoverConta();
+
+				break;
+
+			case 6:
+
+				System.out.println("........................");
+				System.out.println("Depósito");
+				System.out.println("........................");
+				System.out.println();
+
+				System.out.print("Digite o Código da Conta: ");
+				codigoDaContaPesq = _leitor.nextInt();
+
+				System.out.print("Digite o Valor do Depósito: ");
+				double valorDep = _leitor.nextDouble();
+
+				var contaPesquisa = _listaDeContas.GetContaByCodigo(codigoDaContaPesq);
+
+				if (contaPesquisa == null) {
+					break;
+				}
+
+				var valorTotal = contaPesquisa.getValor() + valorDep;
+				contaPesquisa.setValor(valorTotal);
+
+				_listaDeContas.UpdateConta(contaPesquisa);
+				System.out.println();
+
+				break;
+
+			case 7:
+				System.out.println("........................");
+				System.out.println("Pagamento");
+				System.out.println("........................");
+				System.out.println();
+
+				System.out.print("Digite o Código da Conta: ");
+				codigoDaContaPesq = _leitor.nextInt();
+
+				System.out.print("Digite o Valor do Pagamento: ");
+				double pagamento = _leitor.nextDouble();
+
+				var contaPagamento = _listaDeContas.GetContaByCodigo(codigoDaContaPesq);
+
+				if (contaPagamento == null) {
+					break;
+				}
+
+				var pagamentoValido = pagamento <= contaPagamento.getValor() && pagamento <= contaPagamento.getLimite();
+
+				if (!pagamentoValido) {
+					System.out.println("Pagamento inválido: Sem saldo ou sem limite");
+				}
+				
+				var saldoNovo = contaPagamento.getValor() - pagamento;
+				contaPagamento.setValor(saldoNovo);
+				_listaDeContas.UpdateConta(contaPagamento);
+				System.out.println();
+
+				break;
+
+			case 8:
+
+				System.out.println("........................");
+				System.out.println("Transferência entre Contas");
+				System.out.println("........................");
+				System.out.println();
+
+				System.out.print("Digite o Código da Conta Remetente: ");
+				int codigoDaContaPesq1 = _leitor.nextInt();
+
+				System.out.print("Digite o Código da conta do Destinatario: ");
+				int codigoDaContaPesq2 = _leitor.nextInt();
+
+				System.out.print("Digite o Valor da Transferência: ");
+				double valorTransferencia = _leitor.nextDouble();
+
+				var contaRemetente = _listaDeContas.GetContaByCodigo(codigoDaContaPesq1);
+				if (contaRemetente == null) {
+					break;
+				}
+
+				var contaDestinatario = _listaDeContas.GetContaByCodigo(codigoDaContaPesq2);
+				if (contaDestinatario == null) {
+					break;
+				}
+
+				var transferenciaValida = valorTransferencia <= contaRemetente.getValor()
+						&& valorTransferencia <= contaRemetente.getLimite();
+
+				if (!transferenciaValida) {
+					System.out.println("Transferencia invalida: sem saldo ou limite");
+					break;
+				}
+				
+				var saldoContaRemetente = contaRemetente.getValor() - valorTransferencia;
+				contaRemetente.setValor(saldoContaRemetente);
+				_listaDeContas.UpdateConta(contaRemetente);
+
+				var saldoContaDestinatario = contaDestinatario.getValor() + valorTransferencia;
+				contaDestinatario.setValor(saldoContaDestinatario);
+				_listaDeContas.UpdateConta(contaDestinatario);
+				
+				break;
+
+			case 9:
+
+				System.out.println("........................");
+				System.out.println("Finalizando");
+				System.out.println("........................");
+				_leitor.close();
+				break;
+
+			default:
+				System.out.println("OPÇÃO INVÁLIDA!!!!");
+				break;
+			}
+		} while (opcao != 9);
+
+	}
+	
+	
+	private static void Cadastro() {
+		
+		System.out.println();
+		System.out.println("........................");
+		System.out.println("Cadastro da sua conta");
+		System.out.println("........................");
+		System.out.println();
+
+		System.out.print("Código da Conta: ");
+		int codigoDaConta = _leitor.nextInt();
+
+		System.out.print("Nome do Responsavel: ");
+		String nomeDoResponsavel = _leitor.nextLine();
+		nomeDoResponsavel = _leitor.nextLine();
+
+		System.out.print("Valor de conta: ");
+		double valorDaConta = _leitor.nextDouble();
+
+		System.out.print("Valor do Limite: ");
+		double valorDoLimite = _leitor.nextDouble();
+
+		Conta novaConta = new Conta(codigoDaConta, nomeDoResponsavel, valorDaConta, valorDoLimite);
+		Conta result = _listaDeContas.InserirConta(novaConta);
+
+		if (result == null) {
+			return;
+		}
+
+		System.out.println("Conta Cadastrada com Sucesso!!!!!");
+		System.out.println();
+		
+	}
+	
+	private static void MostrarTodos() {
+		
+		System.out.println("........................");
+		System.out.println("Mostrar Todas as Contas");
+		System.out.println("........................");
+		System.out.println();
+
+		_listaDeContas.PrintAll();
+		System.out.println();
+		
+	}
+	
+	private static void MostrarConta() {
+		System.out.println("........................");
+		System.out.println("Mostrar Conta");
+		System.out.println("........................");
+		System.out.println();
+
+		System.out.print("Digite o Código da Conta: ");
+		int codigoDaContaPesq = _leitor.nextInt();
+
+		Conta resultado = _listaDeContas.GetContaByCodigo(codigoDaContaPesq);
+
+		if (resultado == null) {
+			return;
+		}
+
+		System.out.println("Código:" + resultado.getCodigo());
+		System.out.println("Nome do Produto:" + resultado.getNome());
+		System.out.println("Preço:" + resultado.getValor());
+		System.out.println("Limite da Conta: " + resultado.getLimite());
+		System.out.println();
+	}
+	
+	private static void AtualizarConta() {
+		System.out.println("........................");
+		System.out.println("Alterar Dados da Conta");
+		System.out.println("........................");
+		System.out.println();
+
+		System.out.print("Digite o Código da Conta: ");
+		var codigoDaContaPesq = _leitor.nextInt();
+		System.out.println("Nome do Responsável: ");
+		var nome = _leitor.nextLine();
+		nome = _leitor.nextLine();
+		System.out.println("Valor em Conta: ");
+		var valor = _leitor.nextDouble();
+		System.out.println("Limite: ");
+		var limite = _leitor.nextDouble();
+
+		Conta contaAtualizada = new Conta(codigoDaContaPesq, nome, valor, limite);
+
+		_listaDeContas.UpdateConta(contaAtualizada);
+		System.out.println();
+	}
+	
+	private static void RemoverConta() {
+		System.out.println("........................");
+		System.out.println("Remover a Conta");
+		System.out.println("........................");
+		System.out.println();
+
+		System.out.print("Digite o Código do Produto: ");
+		var codigoDaContaPesq = _leitor.nextInt();
+
+		_listaDeContas.DeleteContaByCodigo(codigoDaContaPesq);
+		System.out.println();
+	}
+}

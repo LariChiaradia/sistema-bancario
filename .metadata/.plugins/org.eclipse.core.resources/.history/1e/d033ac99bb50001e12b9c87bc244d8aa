@@ -1,0 +1,69 @@
+package classes;
+
+import java.util.ArrayList;
+
+public class ListaDeContas {
+
+	private ArrayList<Conta> Contas;
+
+	public ListaDeContas(ArrayList<Conta> contas) {
+		super();
+		Contas = contas;
+	}
+	
+	public Conta InserirConta(Conta insertConta) {
+		for(Conta conta:this.Contas) {
+			if(conta.getCodigo() == insertConta.getCodigo()) {
+				System.out.println("Conta ja existente");
+				return null;
+			}
+		}
+		
+		this.Contas.add(insertConta);
+		return insertConta;
+	}
+	
+	public Conta GetContaByCodigo(int codigo) {
+		
+		for(Conta conta:this.Contas) {
+			if(conta.getCodigo() == codigo) {
+				return conta;
+			}
+		}
+		
+		System.out.println("Conta não existe");
+		return null;		
+	}
+	
+	public Conta UpdateConta(Conta updatedConta) {
+		
+		for(Conta conta:this.Contas) {
+			if(conta.getCodigo() == updatedConta.getCodigo()) {
+				conta = updatedConta;
+				return conta;
+			}
+		}
+		
+		System.out.println("Conta não existe");
+		return null;
+	}
+	
+	public void DeleteContaByCodigo(int codigo) {
+		for (Conta conta:this.Contas) {
+			if(conta.getCodigo() == codigo) {
+				this.Contas.remove(conta);
+				return;
+			}
+		}
+	}
+	
+	public void PrintAll() {
+        for(Conta conta:this.Contas){
+            System.out.println("Código:" +conta.getCodigo());
+            System.out.println("Nome do Responsavel:" +conta.getNome());
+            System.out.println("Valor que esta em Conta:" +conta.getValor());
+            System.out.println("Limite da Conta: " +conta.getLimite());
+            System.out.println();
+        }
+	}
+}

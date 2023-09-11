@@ -1,0 +1,21 @@
+package classes;
+
+public class ContaService {
+
+	
+	private ListaDeContas _contaRepository;
+
+	public ContaService(ListaDeContas _contaRepository) {
+		super();
+		this._contaRepository = _contaRepository;
+	}
+	
+	public Conta Cadastro(Conta conta) {
+		Conta result = _contaRepository.InserirConta(conta);
+	}
+	
+	
+	
+	
+	
+}

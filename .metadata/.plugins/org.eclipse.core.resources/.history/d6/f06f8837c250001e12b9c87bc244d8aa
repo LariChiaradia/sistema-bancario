@@ -1,0 +1,52 @@
+package classes;
+
+import java.util.Scanner;
+
+public class ContaService {
+
+	
+	private ListaDeContas _contaRepository;
+	private Scanner _leitor;
+
+	public ContaService(ListaDeContas contaRepository, Scanner leitor) {
+		super();
+		this._contaRepository = contaRepository;
+		this._leitor = leitor;
+	}
+	
+	public void Cadastro(Conta conta) {
+		System.out.println();
+		System.out.println("........................");
+		System.out.println("Cadastro da sua conta");
+		System.out.println("........................");
+		System.out.println();
+
+		System.out.print("Código da Conta: ");
+		int codigoDaConta = _leitor.nextInt();
+
+		System.out.print("Nome do Responsavel: ");
+		String nomeDoResponsavel = _leitor.nextLine();
+		nomeDoResponsavel = _leitor.nextLine();
+
+		System.out.print("Valor de conta: ");
+		double valorDaConta = _leitor.nextDouble();
+
+		System.out.print("Valor do Limite: ");
+		double valorDoLimite = _leitor.nextDouble();
+
+		Conta novaConta = new Conta(codigoDaConta, nomeDoResponsavel, valorDaConta, valorDoLimite);
+		Conta result = _contaRepository.InserirConta(novaConta);
+
+		if (result == null) {
+			return;
+		}
+
+		System.out.println("Conta Cadastrada com Sucesso!!!!!");
+		System.out.println();
+	}
+	
+	
+	
+	
+	
+}

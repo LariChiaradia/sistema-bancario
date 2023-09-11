@@ -1,0 +1,17 @@
+package classes;
+
+public class ContaService {
+
+	
+	private ListaDeContas _contasRepository;
+
+	public ContaService(ListaDeContas _contasRepository) {
+		super();
+		this._contasRepository = _contasRepository;
+	}
+	
+	
+	
+	
+	
+}

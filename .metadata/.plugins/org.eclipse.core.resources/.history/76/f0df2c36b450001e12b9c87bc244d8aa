@@ -1,0 +1,56 @@
+package classes;
+
+import java.util.ArrayList;
+
+public class ListaDeContas {
+
+	private ArrayList<Conta> Contas;
+
+	public ListaDeContas(ArrayList<Conta> contas) {
+		super();
+		Contas = contas;
+	}
+	
+	public Conta InserirConta(Conta insertConta) {
+		for(Conta conta:this.Contas) {
+			if(conta.getCodigo() == insertConta.getCodigo()) {
+				System.out.println("Conta ja existe");
+				return null;
+			}
+		}
+		
+		this.Contas.add(insertConta);
+	}
+	
+	public Conta GetContaByCodigo(int codigo) {
+		
+		for(Conta conta:this.Contas) {
+			if(conta.getCodigo() == codigo) {
+				return conta;
+			}
+		}
+		
+		return null;		
+	}
+	
+	public Conta UpdateContaByCodigo(Conta updatedConta) {
+		
+		for(Conta conta:this.Contas) {
+			if(conta.getCodigo() == updatedConta.getCodigo()) {
+				conta = updatedConta;
+				return conta;
+			}
+		}
+		
+		return null;
+	}
+	
+	public void DeleteContaByCodigo(int codigo) {
+		for (Conta conta:this.Contas) {
+			if(conta.getCodigo() == codigo) {
+				this.Contas.remove(conta);
+				return;
+			}
+		}
+	}
+}

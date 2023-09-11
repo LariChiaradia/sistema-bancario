@@ -112,15 +112,17 @@ public class ContaService {
 		
 		System.out.println("Você gostaria de ativar o Limite em sua conta? Para Sim digite true / Para Não digite false.");
 		boolean usaLimite = _leitor.nextBoolean();
-		Conta contaAtualizada;
+		Conta novaConta;
 		
 		if(!usaLimite) {
-			contaAtualizada = new Conta(codigo, nome, valor);
+			novaConta = new Conta(codigo, nome, valor);
 		}else {
 			System.out.print("Valor do Limite: ");
 			double limite = _leitor.nextDouble();
-			contaAtualizada = new Conta(codigo, nome, valor, limite);
+			novaConta = new Conta(codigo, nome, valor, limite);
 		}
+
+		Conta contaAtualizada = new Conta(codigo, nome, valor, limite);
 
 		_contaRepository.UpdateConta(contaAtualizada);
 		System.out.println();
@@ -192,7 +194,6 @@ public class ContaService {
 		double saldoNovo = contaPagamento.getValor() - pagamento;
 		contaPagamento.setValor(saldoNovo);
 		_contaRepository.UpdateConta(contaPagamento);
-		contaPagamento.exibir();
 		System.out.println();
 	}
 

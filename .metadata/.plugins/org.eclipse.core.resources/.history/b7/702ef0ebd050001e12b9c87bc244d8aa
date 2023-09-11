@@ -110,17 +110,10 @@ public class ContaService {
 		System.out.println("Valor em Conta: ");
 		double valor = _leitor.nextDouble();
 		
-		System.out.println("Você gostaria de ativar o Limite em sua conta? Para Sim digite true / Para Não digite false.");
-		boolean usaLimite = _leitor.nextBoolean();
-		Conta contaAtualizada;
-		
-		if(!usaLimite) {
-			contaAtualizada = new Conta(codigo, nome, valor);
-		}else {
-			System.out.print("Valor do Limite: ");
-			double limite = _leitor.nextDouble();
-			contaAtualizada = new Conta(codigo, nome, valor, limite);
-		}
+		System.out.println("Limite: ");
+		double limite = _leitor.nextDouble();
+
+		Conta contaAtualizada = new Conta(codigo, nome, valor, limite);
 
 		_contaRepository.UpdateConta(contaAtualizada);
 		System.out.println();
@@ -192,7 +185,6 @@ public class ContaService {
 		double saldoNovo = contaPagamento.getValor() - pagamento;
 		contaPagamento.setValor(saldoNovo);
 		_contaRepository.UpdateConta(contaPagamento);
-		contaPagamento.exibir();
 		System.out.println();
 	}
 
@@ -204,23 +196,24 @@ public class ContaService {
 
 		System.out.print("Digite o Número da Conta Remetente: ");
 		int codigoRemetente = _leitor.nextInt();
+
+		System.out.print("Digite o Número da conta do Destinatario: ");
+		int codigoDestinatario = _leitor.nextInt();
+
+		System.out.print("Digite o Valor da Transferência: ");
+		double valorTransferencia = _leitor.nextDouble();
+
 		Conta contaRemetente = _contaRepository.GetContaByCodigo(codigoRemetente);
 		if (contaRemetente == null) {
 			System.out.println("Número Da Conta Não Existe.");
 			return;
 		}
 
-		System.out.print("Digite o Número da conta do Destinatario: ");
-		int codigoDestinatario = _leitor.nextInt();
 		Conta contaDestinatario = _contaRepository.GetContaByCodigo(codigoDestinatario);
 		if (contaDestinatario == null) {
 			System.out.println("Número Da Conta Não Existe.");
 			return;
 		}
-
-		System.out.print("Digite o Valor da Transferência: ");
-		double valorTransferencia = _leitor.nextDouble();
-
 		
 		boolean transferenciaValida = contaRemetente.habilitadoParaTransferencia(valorTransferencia);
 		

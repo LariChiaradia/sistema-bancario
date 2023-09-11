@@ -72,12 +72,8 @@ public class ListaDeContas {
 	}
 	
 	public void PrintAll() {
-		int quantidadeDeContas = 0;
         for(Conta conta:this.Contas){
             conta.exibir();
-            quantidadeDeContas++;
         }
-        System.out.println("Total De Contas: " + quantidadeDeContas);
-        System.out.println();
 	}
 }
